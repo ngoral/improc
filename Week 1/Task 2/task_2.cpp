@@ -34,10 +34,11 @@ void showImage(const cv::Mat& image)
     cv::waitKey(0); //Wait for a keystroke in the window
 }
 
-void blurPixel(cv::MatIterator_<uchar> pixel, int width, int height)
+void blurPixel(cv::MatIterator_<uchar> pixel)
 {
-    int neighbourAmount = 0, sum = 0;
+    unsigned int neighbourAmount = 0, sum = 0;
     int x = pixel.pos().x, y = pixel.pos().y;
+    int width = pixel.m->cols, height = pixel.m->rows;
 
     if (y > 0)
     { 
@@ -87,13 +88,13 @@ void blurPixel(cv::MatIterator_<uchar> pixel, int width, int height)
 cv::Mat blurImage(const cv::Mat& original)
 {
     cv::Mat blurred = original.clone();
-    int nRows = blurred.rows;
-    int nCols = blurred.cols;
+    // int nRows = blurred.rows;
+    // int nCols = blurred.cols;
 
 
     for (cv::MatIterator_<uchar> pixel = blurred.begin<uchar>(), end = blurred.end<uchar>(); pixel != end; ++pixel)
     {
-        blurPixel(pixel, nCols, nRows);
+        blurPixel(pixel);
     }
 
     return blurred;
