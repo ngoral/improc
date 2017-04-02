@@ -7,12 +7,7 @@
 
 cv::String getImageName(int argc, char** argv)
 {
-    cv::String imageName("no_signal.png"); //by default
-    if (argc > 1)
-    {
-        imageName = argv[1];
-    }
-    return imageName;
+    return (argc > 1) ? argv[1] : "no_signal.png";
 }
 
 cv::Mat readImage(const cv::String& imageName)
