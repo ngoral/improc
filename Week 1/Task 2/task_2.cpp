@@ -12,8 +12,7 @@ cv::String getImageName(int argc, char** argv)
 
 cv::Mat readImage(const cv::String& imageName)
 {
-    cv::Mat image;
-    image = cv::imread(imageName, cv::IMREAD_GRAYSCALE); //Read the file (grayscale image)
+    cv::Mat image = cv::imread(imageName, cv::IMREAD_GRAYSCALE); //Read the file (grayscale image)
     if (image.empty())                      //Check for invalid input
     {
         std::cerr << "blur-image: could not open or find the image `" << imageName << "'" << std::endl;
