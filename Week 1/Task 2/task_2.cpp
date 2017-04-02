@@ -15,7 +15,7 @@ cv::String getImageName(int argc, char** argv)
     return imageName;
 }
 
-cv::Mat readImage(cv::String imageName)
+cv::Mat readImage(const cv::String& imageName)
 {
     cv::Mat image;
     image = cv::imread(imageName, cv::IMREAD_GRAYSCALE); //Read the file (grayscale image)
@@ -27,7 +27,7 @@ cv::Mat readImage(cv::String imageName)
     return image;
 }
 
-void showImage(cv::Mat image)
+void showImage(const cv::Mat& image)
 {
     cv::namedWindow("Display window", cv::WINDOW_AUTOSIZE); //Create a window for display.
     cv::imshow("Display window", image);                //Show our image inside it.
@@ -84,9 +84,9 @@ void AddNeighbours(cv::MatIterator_<uchar> pixel, int width, int height)
     *pixel = (*pixel + sum) / (neighboursAmount + 1);
 }
 
-cv::Mat blurImage(const cv::Mat* original) //надо бы сделать const cv::Mat, но чтоб я помнила, что к чему тут=)
+cv::Mat blurImage(const cv::Mat& original)
 {
-    cv::Mat blurred = original->clone();
+    cv::Mat blurred = original.clone();
     int nRows = blurred.rows;
     int nCols = blurred.cols;
 
@@ -96,8 +96,6 @@ cv::Mat blurImage(const cv::Mat* original) //надо бы сделать const 
         AddNeighbours(pixel, nCols, nRows);
     }
 
-
-
     return blurred;
 }
 
@@ -105,6 +103,6 @@ int main(int argc, char** argv)
 {
     cv::String imageName = getImageName(argc, argv);
     cv::Mat image = readImage(imageName);
-    showImage(blurImage(&image));
+    showImage(blurImage(image));
     return 0;
 }
