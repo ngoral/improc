@@ -5,12 +5,12 @@
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/highgui.hpp>
 
-cv::String getImageName(int argc, char** argv)
+std::string getImageName(int argc, char** argv)
 {
     return (argc > 1) ? argv[1] : "no_signal.png";
 }
 
-cv::Mat readImage(const cv::String& imageName)
+cv::Mat readImage(const std::string& imageName)
 {
     cv::Mat image = cv::imread(imageName, cv::IMREAD_GRAYSCALE); //Read the file (grayscale image)
     if (image.empty())                      //Check for invalid input
@@ -66,7 +66,7 @@ cv::Mat blurImage(const cv::Mat& original)
 
 int main(int argc, char** argv)
 {
-    cv::String imageName = getImageName(argc, argv);
+    std::string imageName = getImageName(argc, argv);
     cv::Mat image = readImage(imageName);
     showImage(blurImage(image));
     return 0;
