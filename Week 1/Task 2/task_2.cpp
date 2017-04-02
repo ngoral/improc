@@ -64,11 +64,16 @@ cv::Mat blurImage(const cv::Mat& original)
     return blurred;
 }
 
+std::string filenameExtension(const std::string& filename)
+{
+    return filename.substr(filename.rfind("."));
+}
+
 int main(int argc, char** argv)
 {
     std::string imageName = getImageName(argc, argv);
     cv::Mat blurred_image = readImage(imageName);
     showImage(blurImage(blurred_image));
-    imwrite("blurred.png", blurred_image);
+    imwrite("blurred" + filenameExtension(imageName), blurred_image);
     return 0;
 }
