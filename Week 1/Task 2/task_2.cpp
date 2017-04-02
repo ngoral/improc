@@ -36,52 +36,52 @@ void showImage(const cv::Mat& image)
 
 void blurPixel(cv::MatIterator_<uchar> pixel, int width, int height)
 {
-    int neighboursAmount = 0, sum = 0;
+    int neighbourAmount = 0, sum = 0;
     int x = pixel.pos().x, y = pixel.pos().y;
 
     if (y > 0)
     { 
         sum += pixel[-width]; //upper pix
-        neighboursAmount++;
+        neighbourAmount++;
     }
     if (y < height - 1)
     {
         sum += pixel[width]; //bottom pix
-        neighboursAmount++;
+        neighbourAmount++;
     }
     if (x > 0)
     {
         sum += pixel[-1]; //left pix
-        neighboursAmount++;
+        neighbourAmount++;
     }
     if (x < width - 1)
     {
         sum += pixel[1]; //right pix
-        neighboursAmount++;
+        neighbourAmount++;
     }
 
     if (x > 0 && y > 0)
     { 
         sum += pixel[-width - 1]; //upper-left pix
-        neighboursAmount++;
+        neighbourAmount++;
     }
     if (x > 0 && y < height - 1)
     { 
         sum += pixel[width - 1]; //bottom-left pix
-        neighboursAmount++;
+        neighbourAmount++;
     }
     if (x < width - 1 && y > 0)
     { 
         sum += pixel[-width + 1]; //upper-right pix
-        neighboursAmount++;
+        neighbourAmount++;
     }
     if (x < width - 1 && y < height - 1)
     { 
         sum += pixel[width + 1]; //bottom-right pix
-        neighboursAmount++;
+        neighbourAmount++;
     }
 
-    *pixel = (*pixel + sum) / (neighboursAmount + 1);
+    *pixel = (*pixel + sum) / (neighbourAmount + 1);
 }
 
 cv::Mat blurImage(const cv::Mat& original)
