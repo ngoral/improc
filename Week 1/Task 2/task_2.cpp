@@ -21,8 +21,8 @@ cv::Mat readImage(const cv::String& imageName)
     image = cv::imread(imageName, cv::IMREAD_GRAYSCALE); //Read the file (grayscale image)
     if (image.empty())                      //Check for invalid input
     {
-        std::cout <<  "Could not open or find the image" << std::endl;
-        exit(-1);
+        std::cerr << "blur-image: could not open or find the image `" << imageName << "'" << std::endl;
+        exit(1);
     }
     return image;
 }
