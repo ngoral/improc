@@ -67,7 +67,8 @@ cv::Mat blurImage(const cv::Mat& original)
 int main(int argc, char** argv)
 {
     std::string imageName = getImageName(argc, argv);
-    cv::Mat image = readImage(imageName);
-    showImage(blurImage(image));
+    cv::Mat blurred_image = readImage(imageName);
+    showImage(blurImage(blurred_image));
+    imwrite("blurred.png", blurred_image);
     return 0;
 }
