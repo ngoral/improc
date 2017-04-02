@@ -40,57 +40,23 @@ void blurPixel(cv::MatIterator_<uchar> pixel)
     int x = pixel.pos().x, y = pixel.pos().y;
     int width = pixel.m->cols, height = pixel.m->rows;
 
-    if (y > 0)
-    { 
-        sum += pixel[-width]; //upper pix
-        neighbourAmount++;
+    for (int dx = -1; dx != 2; ++dx) {
+        for (int dy = -1; dy != 2; ++dy) {
+            if (
+                x+dx >= 0 && x+dx < width
+                && y+dy >= 0 && y+dy < height
+            ){
+                sum += pixel[dy*width + dx];
+                ++neighbourAmount;
+            }
+        }
     }
-    if (y < height - 1)
-    {
-        sum += pixel[width]; //bottom pix
-        neighbourAmount++;
-    }
-    if (x > 0)
-    {
-        sum += pixel[-1]; //left pix
-        neighbourAmount++;
-    }
-    if (x < width - 1)
-    {
-        sum += pixel[1]; //right pix
-        neighbourAmount++;
-    }
-
-    if (x > 0 && y > 0)
-    { 
-        sum += pixel[-width - 1]; //upper-left pix
-        neighbourAmount++;
-    }
-    if (x > 0 && y < height - 1)
-    { 
-        sum += pixel[width - 1]; //bottom-left pix
-        neighbourAmount++;
-    }
-    if (x < width - 1 && y > 0)
-    { 
-        sum += pixel[-width + 1]; //upper-right pix
-        neighbourAmount++;
-    }
-    if (x < width - 1 && y < height - 1)
-    { 
-        sum += pixel[width + 1]; //bottom-right pix
-        neighbourAmount++;
-    }
-
-    *pixel = (*pixel + sum) / (neighbourAmount + 1);
+    *pixel = sum / neighbourAmount;
 }
 
 cv::Mat blurImage(const cv::Mat& original)
 {
     cv::Mat blurred = original.clone();
-    // int nRows = blurred.rows;
-    // int nCols = blurred.cols;
-
 
     for (cv::MatIterator_<uchar> pixel = blurred.begin<uchar>(), end = blurred.end<uchar>(); pixel != end; ++pixel)
     {
