@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdexcept>
 #include <string>
 
 #include <opencv2/core.hpp>
@@ -14,10 +15,7 @@ cv::Mat readImage(const std::string& imageName)
 {
     cv::Mat image = cv::imread(imageName, cv::IMREAD_GRAYSCALE); //Read the file (grayscale image)
     if (image.empty())                      //Check for invalid input
-    {
-        std::cerr << "blur-image: could not open or find the image `" << imageName << "'" << std::endl;
-        exit(1);
-    }
+        throw std::runtime_error("could not open or find the image `" + imageName + "'");
     return image;
 }
 
@@ -73,9 +71,15 @@ std::string filenameExtension(const std::string& filename)
 
 int main(int argc, char** argv)
 {
-    std::string imageName = getImageName(argc, argv);
-    cv::Mat blurred_image = readImage(imageName);
-    showImage(blurImage(blurred_image));
-    imwrite("blurred" + filenameExtension(imageName), blurred_image);
-    return 0;
+    try {
+        std::string imageName = getImageName(argc, argv);
+        cv::Mat blurred_image = readImage(imageName);
+        showImage(blurImage(blurred_image));
+        imwrite("blurred" + filenameExtension(imageName), blurred_image);
+        return 0;
+    }
+    catch (const std::exception& e) {
+        std::cerr << "blur-image: " << e.what() << std::endl;
+        return 1;
+    }
 }
