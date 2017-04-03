@@ -66,7 +66,9 @@ cv::Mat blurImage(const cv::Mat& original)
 
 std::string filenameExtension(const std::string& filename)
 {
-    return filename.substr(filename.rfind("."));
+    size_t dot = filename.rfind('.');
+    size_t basename = filename.rfind('/') + 1;
+    return (dot != std::string::npos && dot > basename) ? filename.substr(dot) : ".png";
 }
 
 int main(int argc, char** argv)
