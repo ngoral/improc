@@ -6,7 +6,6 @@
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 
-static const unsigned STD_LEVELS_NUMBER = 256;
 
 std::string getImageName(int argc, char** argv)
 {
@@ -50,7 +49,6 @@ int main(int argc, char** argv)
         std::string imageName = getImageName(argc, argv);
         cv::Mat image = readImage(imageName);
         cv::Mat newImage = changeLevels(image, levels);
-        std::cout << levels << ";" << imageName << std::endl;
         cv::imwrite("changed" + filenameExtension(imageName), newImage);
         showImage(newImage);
         return 0;
