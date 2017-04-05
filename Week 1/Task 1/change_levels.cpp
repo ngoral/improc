@@ -43,6 +43,7 @@ int main(int argc, char** argv)
     try {
         int levels = levelsNumber(argc, argv);
         std::string imageName = getImageName(argc, argv);
+        cv::Mat image = readImage(imageName);
         std::cout << levels << ";" << imageName << std::endl;
         return 0;
     }
