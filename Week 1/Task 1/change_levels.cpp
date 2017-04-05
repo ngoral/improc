@@ -6,7 +6,7 @@
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 
-#define STD_LEVELS_NUMBER 256
+static const unsigned STD_LEVELS_NUMBER = 256;
 
 std::string getImageName(int argc, char** argv)
 {
@@ -19,7 +19,7 @@ bool isRightLevelValue(char* value)
     return v >= 2 && v <= 256 && ((v) & (v-1)) == 0;
 }
 
-unsigned short int levelsNumber(int argc, char** argv)
+unsigned short levelsNumber(int argc, char** argv)
 {
     if (argc > 1)
     {
@@ -46,7 +46,7 @@ cv::Mat changeLevels(const cv::Mat& original, unsigned short int levels)
 int main(int argc, char** argv)
 {
     try {
-        unsigned short int levels = levelsNumber(argc, argv);
+        unsigned short levels = levelsNumber(argc, argv);
         std::string imageName = getImageName(argc, argv);
         cv::Mat image = readImage(imageName);
         cv::Mat newImage = changeLevels(image, levels);
