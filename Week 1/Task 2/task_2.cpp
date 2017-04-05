@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <string>
+#include "improc.h"
 
 #include <opencv2/core.hpp>
 #include <opencv2/imgcodecs.hpp>
@@ -9,21 +10,6 @@
 std::string getImageName(int argc, char** argv)
 {
     return (argc > 1) ? argv[1] : "no_signal.png";
-}
-
-cv::Mat readImage(const std::string& imageName)
-{
-    cv::Mat image = cv::imread(imageName, cv::IMREAD_GRAYSCALE); //Read the file (grayscale image)
-    if (image.empty())                      //Check for invalid input
-        throw std::runtime_error("could not open or find the image `" + imageName + "'");
-    return image;
-}
-
-void showImage(const cv::Mat& image)
-{
-    cv::namedWindow("Display window", cv::WINDOW_AUTOSIZE); //Create a window for display.
-    cv::imshow("Display window", image);                //Show our image inside it.
-    cv::waitKey(0); //Wait for a keystroke in the window
 }
 
 int blurPixel(cv::MatConstIterator_<uchar> pixel)
@@ -62,20 +48,13 @@ cv::Mat blurImage(const cv::Mat& original)
     return blurred;
 }
 
-std::string filenameExtension(const std::string& filename)
-{
-    size_t dot = filename.rfind('.');
-    size_t basename = filename.rfind('/') + 1;
-    return (dot != std::string::npos && dot > basename) ? filename.substr(dot) : ".png";
-}
-
 int main(int argc, char** argv)
 {
     try {
         std::string imageName = getImageName(argc, argv);
         cv::Mat blurred_image = readImage(imageName);
         showImage(blurImage(blurred_image));
-        imwrite("blurred" + filenameExtension(imageName), blurred_image);
+        cv::imwrite("blurred" + filenameExtension(imageName), blurred_image);
         return 0;
     }
     catch (const std::exception& e) {
