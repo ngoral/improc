@@ -39,10 +39,10 @@ unsigned short levelsNumber(int argc, char** argv)
 cv::Mat changeLevels(const cv::Mat& original, unsigned short int levels)
 {
     cv::Mat newImage = original.clone();
-    unsigned short int koefficient = STD_LEVELS_NUMBER / levels; //always power of 2
+    unsigned short int coefficient = STD_LEVELS_NUMBER / levels; //always power of 2
 
     for(auto pixel = newImage.begin<uchar>(), end = newImage.end<uchar>(); pixel != end; ++pixel)
-        *pixel = (*pixel / koefficient) * koefficient;
+        *pixel = (*pixel / coefficient) * coefficient;
 
     return newImage;
 }
