@@ -14,7 +14,7 @@ std::string getImageName(int argc, char** argv)
 
 bool angleValid(int angle)
 {
-    return abs(angle) == 45 || abs(angle) == 90;
+    return abs(angle) == 45 || abs(angle) == 90 || abs(angle) == 180 || abs(angle) == 360;
 }
 
 int getAngle(int argc, char** argv)
@@ -30,14 +30,58 @@ int getAngle(int argc, char** argv)
         throw std::runtime_error("Could not find angle. Usage: ./rotate angle [image_name] ");
 }
 
+double gradToRad(int angle)
+{
+    return angle / 180.0 * M_PI;
+}
+
+double newX(cv::Point pos, double angle)
+{
+    return pos.x * cos(angle) + pos.y * sin(angle);
+}
+
+double newY(cv::Point pos, double angle)
+{
+    return -pos.x * sin(angle) + pos.y * cos(angle);
+}
+
+void updateImage(cv::Mat& image, cv::MatConstIterator_<uchar>& pixel, double angle)
+{
+    double x = newX(pixel.pos(), angle), y = newY(pixel.pos(), angle);
+
+        //std::cout << pixel.pos().x << pixel.pos().y << std::endl;
+        //std::cout << x << y << std::endl;
+
+    if (x >= 0 && y >= 0 && x < pixel.m->cols && y < pixel.m->rows)
+    {
+        image.at<uchar>(y, x) = *pixel;
+    }
+}
+
+cv::Mat rotate(const cv::Mat& original, double angle)
+{
+    cv::Mat rotated = cv::Mat::zeros(original.rows, original.cols, CV_8UC1); //почему не нужно cv:: перед типом??
+        std::cout << angle << " " << sin(angle) << std::endl;
+
+    for (auto origPixel = original.begin<uchar>(), end = original.end<uchar>(); origPixel != end; ++origPixel)
+    {
+        updateImage(rotated, origPixel, angle);
+    }
+
+    return rotated;
+}
+
 int main(int argc, char** argv)
 {
     try
     {
-        int angle = getAngle(argc, argv);
+        double angle = gradToRad(getAngle(argc, argv));
         std::string imageName = getImageName(argc, argv);
         cv::Mat image = readImage(imageName);
-        std::cout << angle << "," << imageName << std::endl;
+        cv::Mat rotated = rotate(image, angle);
+
+        showImage(rotated);
+
         return 0;
     }
     catch (const std::exception& e)
