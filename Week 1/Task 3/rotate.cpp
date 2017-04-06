@@ -36,7 +36,8 @@ int main(int argc, char** argv)
     {
         int angle = getAngle(argc, argv);
         std::string imageName = getImageName(argc, argv);
-        std::cout << angle << std::endl;
+        cv::Mat image = readImage(imageName);
+        std::cout << angle << "," << imageName << std::endl;
         return 0;
     }
     catch (const std::exception& e)
