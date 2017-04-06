@@ -35,6 +35,7 @@ int main(int argc, char** argv)
     try
     {
         int angle = getAngle(argc, argv);
+        std::string imageName = getImageName(argc, argv);
         std::cout << angle << std::endl;
         return 0;
     }
