@@ -35,22 +35,20 @@ double gradToRad(int angle)
     return angle / 180.0 * M_PI;
 }
 
-double newX(cv::Point pos, double angle)
+double newX(cv::Point pos, double angle, cv::Point center)
 {
-    return pos.x * cos(angle) + pos.y * sin(angle);
+    return center.x + (pos.x - center.x) * cos(angle) + (pos.y - center.y) * sin(angle);
 }
 
-double newY(cv::Point pos, double angle)
+double newY(cv::Point pos, double angle, cv::Point center)
 {
-    return -pos.x * sin(angle) + pos.y * cos(angle);
+    return center.y -(pos.x - center.x) * sin(angle) + (pos.y - center.y) * cos(angle);
 }
 
 void updateImage(cv::Mat& image, cv::MatConstIterator_<uchar>& pixel, double angle)
 {
-    double x = newX(pixel.pos(), angle), y = newY(pixel.pos(), angle);
-
-        //std::cout << pixel.pos().x << pixel.pos().y << std::endl;
-        //std::cout << x << y << std::endl;
+    cv::Point center = cv::Point(image.cols / 2, image.rows / 2);
+    double x = newX(pixel.pos(), angle, center), y = newY(pixel.pos(), angle, center);
 
     if (x >= 0 && y >= 0 && x < pixel.m->cols && y < pixel.m->rows)
     {
@@ -60,8 +58,7 @@ void updateImage(cv::Mat& image, cv::MatConstIterator_<uchar>& pixel, double ang
 
 cv::Mat rotate(const cv::Mat& original, double angle)
 {
-    cv::Mat rotated = cv::Mat::zeros(original.rows, original.cols, CV_8UC1); //почему не нужно cv:: перед типом??
-        std::cout << angle << " " << sin(angle) << std::endl;
+    cv::Mat rotated = cv::Mat::zeros(original.rows, original.cols, CV_8UC1);
 
     for (auto origPixel = original.begin<uchar>(), end = original.end<uchar>(); origPixel != end; ++origPixel)
     {
@@ -86,7 +83,7 @@ int main(int argc, char** argv)
     }
     catch (const std::exception& e)
     {
-        std::cerr << "change_levels: " << e.what() << std::endl;
+        std::cerr << "rotate: " << e.what() << std::endl;
         return 1;
     }
 }
