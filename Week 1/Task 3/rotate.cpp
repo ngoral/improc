@@ -14,7 +14,7 @@ std::string getImageName(int argc, char** argv)
 
 bool angleValid(int angle)
 {
-    return abs(angle) == 45 || abs(angle) == 90 || abs(angle) == 180 || abs(angle) == 360;
+    return abs(angle) % 45 == 0 || abs(angle) % 90 == 0;
 }
 
 int getAngle(int argc, char** argv)
