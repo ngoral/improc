@@ -42,7 +42,7 @@ double newX(cv::Point pos, double angle, cv::Point center)
 
 double newY(cv::Point pos, double angle, cv::Point center)
 {
-    return center.y -(pos.x - center.x) * sin(angle) + (pos.y - center.y) * cos(angle);
+    return center.y - (pos.x - center.x) * sin(angle) + (pos.y - center.y) * cos(angle);
 }
 
 void updateImage(cv::Mat& image, cv::MatConstIterator_<uchar>& pixel, double angle)
@@ -56,9 +56,22 @@ void updateImage(cv::Mat& image, cv::MatConstIterator_<uchar>& pixel, double ang
     }
 }
 
+int newWidth(int originalWidth, int originalHeight, double angle)
+{
+    return std::abs(originalWidth * std::abs(cos(angle)) + originalHeight * std::abs(sin(angle)));
+}
+
+int newHeight(int originalWidth, int originalHeight, double angle)
+{
+    return abs(originalWidth * std::abs(sin(angle)) + originalHeight * std::abs(cos(angle)));
+}
 cv::Mat rotate(const cv::Mat& original, double angle)
 {
-    cv::Mat rotated = cv::Mat::zeros(original.rows, original.cols, CV_8UC1);
+    cv::Mat rotated = cv::Mat::zeros(
+                                        newHeight(original.cols, original.rows, angle),
+                                        newWidth(original.cols, original.rows, angle),
+                                        CV_8UC1
+                                    );
 
     for (auto origPixel = original.begin<uchar>(), end = original.end<uchar>(); origPixel != end; ++origPixel)
     {
