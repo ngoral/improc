@@ -50,7 +50,7 @@ void updateImage(cv::Mat& image, cv::MatConstIterator_<uchar>& pixel, double ang
     cv::Point center = cv::Point(image.cols / 2, image.rows / 2);
     double x = newX(pixel.pos(), angle, center), y = newY(pixel.pos(), angle, center);
 
-    if (x >= 0 && y >= 0 && x < pixel.m->cols && y < pixel.m->rows)
+    if (x >= 0 && y >= 0 && x < image.cols && y < image.rows)
     {
         image.at<uchar>(y, x) = *pixel;
     }
