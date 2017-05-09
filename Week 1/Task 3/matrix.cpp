@@ -57,7 +57,7 @@ template <class T>
 Matrix<T> operator+(const Matrix<T> &matrix1, const Matrix<T> &matrix2)
 {
     if (matrix1.width() != matrix2.width() || matrix1.height() != matrix2.height()) {
-        throw std::runtime_error("Matrix sizes should be equal");
+        throw std::runtime_error("Matrices dimensions mismatch");
     }
 
     std::vector<T> sumVector;
@@ -74,7 +74,7 @@ template <class T>
 Matrix<T> operator*(const Matrix<T> &matrix1, const Matrix<T> &matrix2)
 {
     if (matrix1.width() != matrix2.height()) {
-        throw std::runtime_error("Bad matrix sizes");
+        throw std::runtime_error("Matrices dimensions mismatch");
     }
 
     std::vector<T> prodVector;
