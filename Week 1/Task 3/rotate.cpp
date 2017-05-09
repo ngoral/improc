@@ -51,7 +51,8 @@ void updateImage(const cv::Mat& origImage, cv::MatIterator_<uchar>& newPixel, do
     cv::Point originalCenter = cv::Point(origImage.cols / 2, origImage.rows / 2);
     cv::Point d = newCenter - originalCenter;
 
-    double x = oldX(newPixel.pos() - d, angle, newCenter), y = oldY(newPixel.pos() - d, angle, originalCenter);
+
+    double x = oldX(newPixel.pos() - d, angle, originalCenter), y = oldY(newPixel.pos() - d, angle, originalCenter);
 
     if (x >= 0 && y >= 0 && x < origImage.cols && y < origImage.rows)
     {
