@@ -7,7 +7,7 @@ public:
     Matrix(int height, int width, T matrix[]);
     Matrix(const Matrix<T>& matrix);
 
-    std::vector<T> matrix() const;
+    const std::vector<T>& matrix() const;
     int height() const;
     int width() const;
 

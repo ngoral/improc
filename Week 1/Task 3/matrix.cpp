@@ -20,6 +20,13 @@ Matrix<T>::Matrix(int height, int width, T matrix[]):
 {}
 
 template <class T>
+Matrix<T>::Matrix(const Matrix<T>& matrix):
+    height_(matrix.height()),
+    width_(matrix.width()),
+    matrix_(matrix.matrix())
+{}
+
+template <class T>
 const std::vector<T>& Matrix<T>::matrix() const
 {
     return matrix_;
