@@ -52,22 +52,22 @@ int Matrix<T>::width() const
 template <class T>
 std::ostream& operator<<(std::ostream &os, const Matrix<T> &matrix)
 {
-    std::string printableString = "[\n ";
+    os << "[\n ";
     for (int i = 0; i != matrix.height(); ++i) {
         for (int j = 0; j != matrix.width(); ++j) {
-            printableString += std::to_string(matrix.matrix().at(matrix.width() * i + j));
+            os << std::to_string(matrix.matrix().at(matrix.width() * i + j));
             if (j != matrix.width() - 1) {
-                printableString += "  ";
+                os << "  ";
             }
         }
-        printableString += "\n";
+        os << "\n";
         if (i != matrix.height() - 1) {
-            printableString += " ";
+            os << " ";
         }
     }
 
-    printableString += "]\n";
-    return os << printableString;
+    os << "]\n";
+    return os;
 }
 
 template <class T>
