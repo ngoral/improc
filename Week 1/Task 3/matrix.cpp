@@ -70,13 +70,40 @@ Matrix<T> operator+(const Matrix<T> &matrix1, const Matrix<T> &matrix2)
     return Matrix<T> (matrix1.height(), matrix1.width(), sumVector);
 }
 
+template <class T>
+Matrix<T> operator*(const Matrix<T> &matrix1, const Matrix<T> &matrix2)
+{
+    if (matrix1.width() != matrix2.height()) {
+        throw std::runtime_error("Bad matrix sizes");
+    }
+
+    std::vector<T> prodVector;
+    for (
+        auto line1 = matrix1.matrix().begin(); line1 < matrix1.matrix().end(); line1 += matrix1.width()) {
+
+        for (auto col2 = matrix2.matrix().begin(); col2 != matrix2.matrix().begin() + matrix2.height(); ++col2) {
+            T sum = 0;
+            for (
+                auto elem1 = line1, elem2 = col2;
+                elem1 != line1 + matrix1.width();
+                ++elem1, elem2 += matrix2.width()) {
+                sum += *elem1 * *elem2;
+            }
+            prodVector.push_back(sum);
+        }
+    }
+
+    return Matrix<T> (matrix1.height(), matrix2.width(), prodVector);
+}
+
 int main(void)
 {
     Matrix<int> ones(3, 3, std::vector<int> (9, 1));
-    Matrix<int> threes(3, 3, {3, 3, 3, 3, 3, 3, 3, 3, 3});
+    // Matrix<int> threes(3, 3, {3, 3, 3, 3, 3, 3, 3, 3, 3});
+    Matrix<int> threes(3, 3, {3, 0, 0, 0, 3, 0, 0, 0, 3});
 
     std::cout << ones;
     std::cout << threes;
-    std::cout << threes + ones;
+    std::cout << threes * ones;
     return 0;
 }

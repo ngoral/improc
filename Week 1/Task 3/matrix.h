@@ -24,3 +24,5 @@ template <class T>
 std::ostream& operator<<(std::ostream &os, const Matrix<T> &matrix);
 template <class T>
 Matrix<T> operator+(const Matrix<T> &matrix1, const Matrix<T> &matrix2);
+template <class T>
+Matrix<T> operator*(const Matrix<T> &matrix1, const Matrix<T> &matrix2);
