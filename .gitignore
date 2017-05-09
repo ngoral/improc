@@ -40,3 +40,4 @@ install_manifest.txt
 CTestTestfile.cmake
 
 *.png
+*.jpg
