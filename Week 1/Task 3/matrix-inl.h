@@ -25,7 +25,7 @@ template <class T>
 inline Matrix<T>::Matrix(int height, int width, T matrix[]):
     height_(height),
     width_(width),
-    matrix_(matrix.begin(), matrix.end())
+    matrix_(matrix, matrix + width * height)
 {}
 
 template <class T>
