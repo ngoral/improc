@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <stdexcept>
+#include <algorithm>
 
 #include "matrix.h"
 
@@ -55,22 +56,18 @@ std::ostream& operator<<(std::ostream &os, const Matrix<T> &matrix)
 template <class T>
 Matrix<T> operator+(const Matrix<T> &matrix1, const Matrix<T> &matrix2)
 {
-    if ((matrix1.width() == matrix2.width()) && (matrix1.height() == matrix2.height())) {
-        std::vector<T> sumVector;
-        for (
-            auto elem1 = matrix1.matrix().begin(), elem2 = matrix2.matrix().begin();
-            elem1 != matrix1.matrix().end();
-            ++elem1, ++elem2
-        ) {
-            sumVector.push_back(*elem1 + *elem2);
-        }
-
-        return Matrix<T> (matrix1.height(), matrix1.width(), sumVector);
-    }
-    else
-    {
+    if (matrix1.width() != matrix2.width() || matrix1.height() != matrix2.height()) {
         throw std::runtime_error("Matrix sizes should be equal");
     }
+
+    std::vector<T> sumVector;
+    std::transform (
+        matrix1.matrix().begin(), matrix1.matrix().end(),
+        matrix2.matrix().begin(), std::back_inserter(sumVector),
+        std::plus<T>()
+    );
+
+    return Matrix<T> (matrix1.height(), matrix1.width(), sumVector);
 }
 
 int main(void)
