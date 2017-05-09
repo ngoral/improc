@@ -7,9 +7,9 @@ public:
     Matrix(int height, int width, T matrix[]);
     Matrix(const Matrix<T>& matrix);
 
-    const std::vector<T>& matrix() const;
-    int height() const;
-    int width() const;
+    const std::vector<T>& matrix() const { return matrix_; }
+    int height() const { return height_; }
+    int width() const { return width_; }
 
 private:
     int width_, height_;

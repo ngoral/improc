@@ -27,24 +27,6 @@ Matrix<T>::Matrix(const Matrix<T>& matrix):
     matrix_(matrix.matrix())
 {}
 
-template <class T>
-const std::vector<T>& Matrix<T>::matrix() const
-{
-    return matrix_;
-}
-
-template <class T>
-int Matrix<T>::height() const
-{
-    return height_;
-}
-
-template <class T>
-int Matrix<T>::width() const
-{
-    return width_;
-}
-
 // ===========================
 // == operators overloading ==
 // ===========================
