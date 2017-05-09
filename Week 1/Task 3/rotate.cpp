@@ -47,8 +47,11 @@ double newY(cv::Point pos, double angle, cv::Point center)
 
 void updateImage(cv::Mat& image, cv::MatConstIterator_<uchar>& pixel, double angle)
 {
-    cv::Point center = cv::Point(image.cols / 2, image.rows / 2);
-    double x = newX(pixel.pos(), angle, center), y = newY(pixel.pos(), angle, center);
+    cv::Point originalCenter = cv::Point(pixel.m->cols / 2, pixel.m->rows / 2);
+    cv::Point newCenter = cv::Point(image.cols / 2, image.rows / 2);
+    cv::Point d = newCenter - originalCenter;
+    
+    double x = newX(pixel.pos() + d, angle, newCenter), y = newY(pixel.pos() + d, angle, newCenter);
 
     if (x >= 0 && y >= 0 && x < image.cols && y < image.rows)
     {
