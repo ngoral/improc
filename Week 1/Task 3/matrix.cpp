@@ -78,16 +78,25 @@ Matrix<T> operator*(const Matrix<T> &matrix1, const Matrix<T> &matrix2)
     }
 
     std::vector<T> prodVector;
-    for (
-        auto line1 = matrix1.elements().begin(); line1 < matrix1.elements().end(); line1 += matrix1.width()) {
+    // for (auto line1 = matrix1.elements().begin(); line1 < matrix1.elements().end(); line1 += matrix1.width()) {
+    //     for (auto col2 = matrix2.elements().begin(); col2 != matrix2.elements().begin() + matrix2.height(); ++col2) {
+    //         T sum = 0;
+    //         for (
+    //             auto elem1 = line1, elem2 = col2;
+    //             elem1 != line1 + matrix1.width();
+    //             ++elem1, elem2 += matrix2.width()
+    //         ) {
+    //             sum += *elem1 * *elem2;
+    //         }
+    //         prodVector.push_back(sum);
+    //     }
+    // }
 
-        for (auto col2 = matrix2.elements().begin(); col2 != matrix2.elements().begin() + matrix2.height(); ++col2) {
+    for (int i = 0; i != matrix1.height(); ++i) {
+        for (int j = 0; j != matrix2.width(); ++j) {
             T sum = 0;
-            for (
-                auto elem1 = line1, elem2 = col2;
-                elem1 != line1 + matrix1.width();
-                ++elem1, elem2 += matrix2.width()) {
-                sum += *elem1 * *elem2;
+            for (int k = 0; k != matrix2.height(); ++k) {
+                sum += matrix1.elements().at( matrix1.width() * i + k) * matrix2.elements().at(matrix2.width() * k + j);
             }
             prodVector.push_back(sum);
         }
