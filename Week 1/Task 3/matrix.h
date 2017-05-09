@@ -1,33 +1,37 @@
 #pragma once
 
 #include <iostream>
-#include <vector>
+// #include <vector>
+#include <array>
 
-template <class T> class Matrix {
+#include <opencv2/core.hpp>
+
+template <class T, size_t H, size_t W> class Matrix {
 public:
-    inline Matrix();
-    inline Matrix(int height, int width, std::vector<T> matrix);
-    inline Matrix(int height, int width, T matrix[]);
-    inline Matrix(const Matrix<T>& matrix);
+    inline Matrix() {}
+    inline Matrix(std::array<std::array<T, W>, H> matrix);
+    inline Matrix(const T matrix[H][W]);
+    inline Matrix(std::initializer_list<std::initializer_list<T>> matrix);
+    inline Matrix(const Matrix<T, H, W>& matrix);
+    inline Matrix(const cv::Point point);
 
     //getters
-    inline const std::vector<T>& elements() const { return matrix_; }
-    inline int height() const { return height_; }
-    inline int width() const { return width_; }
+    inline std::array<std::array<T, W>, H> elements() const { return matrix_; }
+    inline size_t height() const { return H; }
+    inline size_t width() const { return W; }
 
     //setters
-    inline void setElements (const std::vector<T>& elements) { matrix_ = elements; }
+    inline void setElements (const T elements[H][W]) { matrix_ = elements; }
 
 private:
-    int width_, height_;
-    std::vector<T> matrix_;
+    std::array<std::array<T, W>, H> matrix_;
 };
 
-template <class T>
-inline std::ostream& operator<<(std::ostream &os, const Matrix<T> &matrix);
-template <class T>
-inline Matrix<T> operator+(const Matrix<T> &matrix1, const Matrix<T> &matrix2);
-template <class T>
-inline Matrix<T> operator*(const Matrix<T> &matrix1, const Matrix<T> &matrix2);
+template <class T, size_t H, size_t W>
+inline std::ostream& operator<<(std::ostream &os, const Matrix<T, H, W> &matrix);
+template <class T, size_t H, size_t W>
+inline Matrix<T, H, W> operator+(const Matrix<T, H, W> &matrix1, const Matrix<T, H, W> &matrix2);
+template <class T, size_t H, size_t W, size_t W2>
+inline Matrix<T, H, W2> operator*(const Matrix<T, H, W> &matrix1, const Matrix<T, W, W2> &matrix2);
 
 #include "matrix-inl.h"
