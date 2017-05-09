@@ -2,10 +2,11 @@
 #include <stdexcept>
 #include <string>
 #include <cmath>
-#include "improc.h"
 
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
+
+#include "improc.h"
 
 std::string getImageName(int argc, char** argv)
 {
@@ -19,15 +20,17 @@ bool angleValid(int angle)
 
 int getAngle(int argc, char** argv)
 {
-    if (argc > 1)
-    {
-        if (angleValid(std::stoi(argv[1])))
+    if (argc > 1) {
+        if (angleValid(std::stoi(argv[1]))) {
             return std::stoi(argv[1]);
-        else
+        }
+        else {
             throw std::runtime_error("Wrong angle `" + std::string(argv[1]) + "'");
+        }
     }
-    else
+    else {
         throw std::runtime_error("Could not find angle. Usage: ./rotate angle [image_name] ");
+    }
 }
 
 double gradToRad(int angle)
@@ -54,8 +57,7 @@ void updateImage(const cv::Mat& origImage, cv::MatIterator_<uchar>& newPixel, do
 
     double x = oldX(newPixel.pos() - d, angle, originalCenter), y = oldY(newPixel.pos() - d, angle, originalCenter);
 
-    if (x >= 0 && y >= 0 && x < origImage.cols && y < origImage.rows)
-    {
+    if (x >= 0 && y >= 0 && x < origImage.cols && y < origImage.rows) {
         *newPixel = origImage.at<uchar>(y, x);
     }
 }
@@ -77,8 +79,7 @@ cv::Mat rotate(const cv::Mat& original, double angle)
                                         CV_8UC1
                                     );
 
-    for (auto newPixel = rotated.begin<uchar>(), end = rotated.end<uchar>(); newPixel != end; ++newPixel)
-    {
+    for (auto newPixel = rotated.begin<uchar>(), end = rotated.end<uchar>(); newPixel != end; ++newPixel) {
         updateImage(original, newPixel, angle);
     }
 
@@ -87,8 +88,7 @@ cv::Mat rotate(const cv::Mat& original, double angle)
 
 int main(int argc, char** argv)
 {
-    try
-    {
+    try {
         double angle = gradToRad(getAngle(argc, argv));
         std::string imageName = getImageName(argc, argv);
         cv::Mat image = readImage(imageName);
@@ -99,8 +99,7 @@ int main(int argc, char** argv)
 
         return 0;
     }
-    catch (const std::exception& e)
-    {
+    catch (const std::exception& e) {
         std::cerr << "rotate: " << e.what() << std::endl;
         return 1;
     }
