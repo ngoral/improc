@@ -91,6 +91,7 @@ int main(int argc, char** argv)
         cv::Mat rotated = rotate(image, angle);
 
         showImage(rotated);
+        cv::imwrite("rotated" + filenameExtension(imageName), rotated);
 
         return 0;
     }
