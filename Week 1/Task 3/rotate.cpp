@@ -35,27 +35,27 @@ double gradToRad(int angle)
     return angle / 180.0 * M_PI;
 }
 
-double newX(cv::Point pos, double angle, cv::Point center)
+double oldX(cv::Point pos, double angle, cv::Point center)
 {
-    return center.x + (pos.x - center.x) * cos(angle) + (pos.y - center.y) * sin(angle);
+    return center.x + (pos.x - center.x) * cos(angle) - (pos.y - center.y) * sin(angle);
 }
 
-double newY(cv::Point pos, double angle, cv::Point center)
+double oldY(cv::Point pos, double angle, cv::Point center)
 {
-    return center.y - (pos.x - center.x) * sin(angle) + (pos.y - center.y) * cos(angle);
+    return center.y + (pos.x - center.x) * sin(angle) + (pos.y - center.y) * cos(angle);
 }
 
-void updateImage(cv::Mat& image, cv::MatConstIterator_<uchar>& pixel, double angle)
+void updateImage(const cv::Mat& origImage, cv::MatIterator_<uchar>& newPixel, double angle)
 {
-    cv::Point originalCenter = cv::Point(pixel.m->cols / 2, pixel.m->rows / 2);
-    cv::Point newCenter = cv::Point(image.cols / 2, image.rows / 2);
+    cv::Point newCenter = cv::Point(newPixel.m->cols / 2, newPixel.m->rows / 2);
+    cv::Point originalCenter = cv::Point(origImage.cols / 2, origImage.rows / 2);
     cv::Point d = newCenter - originalCenter;
-    
-    double x = newX(pixel.pos() + d, angle, newCenter), y = newY(pixel.pos() + d, angle, newCenter);
 
-    if (x >= 0 && y >= 0 && x < image.cols && y < image.rows)
+    double x = oldX(newPixel.pos() - d, angle, newCenter), y = oldY(newPixel.pos() - d, angle, originalCenter);
+
+    if (x >= 0 && y >= 0 && x < origImage.cols && y < origImage.rows)
     {
-        image.at<uchar>(y, x) = *pixel;
+        *newPixel = origImage.at<uchar>(y, x);
     }
 }
 
@@ -76,9 +76,9 @@ cv::Mat rotate(const cv::Mat& original, double angle)
                                         CV_8UC1
                                     );
 
-    for (auto origPixel = original.begin<uchar>(), end = original.end<uchar>(); origPixel != end; ++origPixel)
+    for (auto newPixel = rotated.begin<uchar>(), end = rotated.end<uchar>(); newPixel != end; ++newPixel)
     {
-        updateImage(rotated, origPixel, angle);
+        updateImage(original, newPixel, angle);
     }
 
     return rotated;
