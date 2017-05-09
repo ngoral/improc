@@ -25,7 +25,7 @@ template <class T>
 Matrix<T>::Matrix(const Matrix<T>& matrix):
     height_(matrix.height()),
     width_(matrix.width()),
-    matrix_(matrix.matrix())
+    matrix_(matrix.elements())
 {}
 
 // ===========================
@@ -38,7 +38,7 @@ std::ostream& operator<<(std::ostream &os, const Matrix<T> &matrix)
     os << "[\n ";
     for (int i = 0; i != matrix.height(); ++i) {
         for (int j = 0; j != matrix.width(); ++j) {
-            os << std::to_string(matrix.matrix().at(matrix.width() * i + j));
+            os << std::to_string(matrix.elements().at(matrix.width() * i + j));
             if (j != matrix.width() - 1) {
                 os << "  ";
             }
@@ -62,8 +62,8 @@ Matrix<T> operator+(const Matrix<T> &matrix1, const Matrix<T> &matrix2)
 
     std::vector<T> sumVector;
     std::transform (
-        matrix1.matrix().begin(), matrix1.matrix().end(),
-        matrix2.matrix().begin(), std::back_inserter(sumVector),
+        matrix1.elements().begin(), matrix1.elements().end(),
+        matrix2.elements().begin(), std::back_inserter(sumVector),
         std::plus<T>()
     );
 
@@ -79,9 +79,9 @@ Matrix<T> operator*(const Matrix<T> &matrix1, const Matrix<T> &matrix2)
 
     std::vector<T> prodVector;
     for (
-        auto line1 = matrix1.matrix().begin(); line1 < matrix1.matrix().end(); line1 += matrix1.width()) {
+        auto line1 = matrix1.elements().begin(); line1 < matrix1.elements().end(); line1 += matrix1.width()) {
 
-        for (auto col2 = matrix2.matrix().begin(); col2 != matrix2.matrix().begin() + matrix2.height(); ++col2) {
+        for (auto col2 = matrix2.elements().begin(); col2 != matrix2.elements().begin() + matrix2.height(); ++col2) {
             T sum = 0;
             for (
                 auto elem1 = line1, elem2 = col2;

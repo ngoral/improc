@@ -8,7 +8,7 @@ public:
     Matrix(const Matrix<T>& matrix);
 
     //getters
-    const std::vector<T>& matrix() const { return matrix_; }
+    const std::vector<T>& elements() const { return matrix_; }
     int height() const { return height_; }
     int width() const { return width_; }
 
