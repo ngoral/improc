@@ -8,6 +8,13 @@
 
 
 template <class T>
+Matrix<T>::Matrix():
+    height_(0),
+    width_(0),
+    matrix_(0,0)
+{}
+
+template <class T>
 Matrix<T>::Matrix(int height, int width, std::vector<T> matrix):
     height_(height),
     width_(width),
@@ -91,14 +98,14 @@ Matrix<T> operator*(const Matrix<T> &matrix1, const Matrix<T> &matrix2)
     return Matrix<T> (matrix1.height(), matrix2.width(), prodVector);
 }
 
-int main(void)
-{
-    Matrix<int> ones(3, 3, std::vector<int> (9, 1));
-    // Matrix<int> threes(3, 3, {3, 3, 3, 3, 3, 3, 3, 3, 3});
-    Matrix<int> threes(3, 3, {3, 0, 0, 0, 3, 0, 0, 0, 3});
+// int main(void)
+// {
+//     Matrix<int> ones(3, 3, std::vector<int> (9, 1));
+//     // Matrix<int> threes(3, 3, {3, 3, 3, 3, 3, 3, 3, 3, 3});
+//     Matrix<int> threes(3, 3, {3, 0, 0, 0, 3, 0, 0, 0, 3});
 
-    std::cout << ones;
-    std::cout << threes;
-    std::cout << threes * ones;
-    return 0;
-}
+//     std::cout << ones;
+//     std::cout << threes;
+//     std::cout << threes * ones;
+//     return 0;
+// }
