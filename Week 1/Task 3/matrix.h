@@ -5,6 +5,7 @@ template <class T> class Matrix {
 public:
     Matrix(int height, int width, std::vector<T> matrix);
     Matrix(int height, int width, T matrix[]);
+    Matrix(const Matrix<T>& matrix);
 
     std::vector<T> matrix() const;
     int height() const;

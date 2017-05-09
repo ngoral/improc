@@ -20,7 +20,7 @@ Matrix<T>::Matrix(int height, int width, T matrix[]):
 {}
 
 template <class T>
-std::vector<T> Matrix<T>::matrix() const
+const std::vector<T>& Matrix<T>::matrix() const
 {
     return matrix_;
 }
